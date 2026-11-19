@@ -19,6 +19,7 @@ OUT="$DOCS/_static/brand"
 mkdir -p "$OUT/fonts"
 cp "$BRAND/stratigraph-theme.css" "$OUT/"
 cp "$HERE/sphinx-rtd-bridge.css" "$OUT/"
+cp "$HERE/brand-theme-toggle.js" "$OUT/"
 
 # The faces the theme file asks for, always.
 for f in erode-latin-400-normal erode-latin-500-normal erode-latin-600-normal \
@@ -39,3 +40,4 @@ fi
 cp "$BRAND/fonts/OFL-ibm-plex.txt" "$BRAND/fonts/NOTICE-erode.txt" "$OUT/fonts/" 2>/dev/null || true
 [ "$FACE" = "em" ] && cp "$BRAND/fonts/OFL-sora.txt" "$BRAND/fonts/OFL-comfortaa.txt" "$OUT/fonts/" 2>/dev/null || true
 echo "brand vendored into $OUT (face: $FACE)"
+echo "html_js_files  = ['brand/brand-theme-toggle.js']"
