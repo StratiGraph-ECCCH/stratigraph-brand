@@ -20,6 +20,17 @@ mkdir -p "$OUT/fonts"
 cp "$BRAND/stratigraph-theme.css" "$OUT/"
 cp "$HERE/sphinx-rtd-bridge.css" "$OUT/"
 cp "$HERE/brand-theme-toggle.js" "$OUT/"
+cp "$HERE/eu-emblem.svg" "$OUT/"
+
+# Il piede della provenienza: una pagina sola lo porta, tutte le pagine lo
+# mostrano. Il modello estende quello del tema, quindi conf.py deve avere
+# templates_path = ['_templates'].
+mkdir -p "$DOCS/_templates"
+if [ "$FACE" = "em" ]; then
+  cp "$HERE/footer-em.html" "$DOCS/_templates/footer.html"
+else
+  cp "$HERE/footer-stratigraph.html" "$DOCS/_templates/footer.html"
+fi
 
 # The faces the theme file asks for, always.
 for f in erode-latin-400-normal erode-latin-500-normal erode-latin-600-normal \
@@ -41,3 +52,4 @@ cp "$BRAND/fonts/OFL-ibm-plex.txt" "$BRAND/fonts/NOTICE-erode.txt" "$OUT/fonts/"
 [ "$FACE" = "em" ] && cp "$BRAND/fonts/OFL-sora.txt" "$BRAND/fonts/OFL-comfortaa.txt" "$OUT/fonts/" 2>/dev/null || true
 echo "brand vendored into $OUT (face: $FACE)"
 echo "html_js_files  = ['brand/brand-theme-toggle.js']"
+echo "templates_path = ['_templates']"
