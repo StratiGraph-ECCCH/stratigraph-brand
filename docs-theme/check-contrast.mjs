@@ -18,6 +18,15 @@
      SHOTS            cartella dove lasciare uno screenshot per pagina e tema
      THEMES           "light,dark" (predefinito)
      MIN              soglia del testo normale (4.5)
+     SKIN             la pelle da misurare (data-sg-skin su <html>): in un
+                      manuale EM, che porta skins.css, "stratigraph" misura
+                      la faccia StratiGraph, "em-cool" l'altra pelle EM;
+                      senza, la pelle che il manuale mostra da sé
+
+   La faccia StratiGraph in chiaro (MICRO-SEG06, 20 nov 2026): link 2,98 →
+   5,74, testata della barra 3,53 → 6,80 (versione 3,00 → 6,80), `code`
+   3,94 → 4,52 (il `code` dentro un link 2,35 → 4,53), con l'arancio e la terracotta della guida scuriti quanto basta
+   (stratigraph-theme.css, --sg-burnt-orange-ink e --sg-terracotta-ink).
 
    Gruppi misurati: barra laterale (anche la sezione aperta e la voce
    corrente), testata della barra, link del testo, tasti <kbd>, codice in riga
@@ -50,6 +59,7 @@ if (!root || !pages.length) {
 const THEMES = (process.env.THEMES || "light,dark").split(",");
 const MIN = Number(process.env.MIN || 4.5);
 const SHOTS = process.env.SHOTS || "";
+const SKIN = process.env.SKIN || "";
 
 const TYPES = {
   ".html": "text/html", ".css": "text/css", ".js": "text/javascript",
@@ -163,6 +173,13 @@ try {
   for (const theme of THEMES) {
     const ctx = await browser.newContext({ viewport: { width: 1280, height: 900 }, colorScheme: theme });
     await ctx.addInitScript((t) => { try { localStorage.setItem("sg-theme", t); } catch (e) {} }, theme);
+    if (SKIN) {
+      await ctx.addInitScript((k) => {
+        const put = () => document.documentElement && document.documentElement.setAttribute("data-sg-skin", k);
+        put();
+        document.addEventListener("DOMContentLoaded", put);
+      }, SKIN);
+    }
     const page = await ctx.newPage();
     for (const p of pages) {
       const resp = await page.goto(base + p.replace(/^\//, ""), { waitUntil: "load" });
@@ -187,7 +204,7 @@ try {
         if (!ok) failures += g.bad.length;
         summary.push({ theme, page: p, group, n: g.n, worst: g.worst.ratio, bad: g.bad.length });
         const w = g.worst;
-        console.log(`${ok ? "✓" : "✗"} ${theme.padEnd(5)} ${p.padEnd(46)} ${group.padEnd(12)} n=${String(g.n).padEnd(4)} min ${w.ratio.toFixed(2)}`
+        console.log(`${ok ? "✓" : "✗"} ${(SKIN ? SKIN + "/" : "") + theme.padEnd(5)} ${p.padEnd(46)} ${group.padEnd(12)} n=${String(g.n).padEnd(4)} min ${w.ratio.toFixed(2)}`
           + (ok ? "" : `  ${g.bad.length} sotto soglia, es. «${g.bad[0].text}» ${g.bad[0].cls} ${g.bad[0].fg} su ${g.bad[0].bg} = ${g.bad[0].ratio}`));
       }
     }
