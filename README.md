@@ -103,3 +103,28 @@ default: Extended Matrix ink and ochre on a paper ground, a warm earth dark),
 applies the reader's choice before the first paint and fills a `<select id="skin">`.
 The choice is stored under `sg-skin`, shared by every face on the node's origin.
 Sora and Comfortaa are SIL OFL 1.1 (`fonts/OFL-*.txt`).
+
+## The manuals: dark face, funding, contrast (20 November 2026)
+
+`docs-theme/` dresses the Sphinx manuals (`sync-brand-docs.sh <docs> em|stratigraph
+[static-dir]`). `sphinx-rtd-bridge.css` now says the places of the Read the Docs
+frame that the brand does not name — link ink, the open branch of the side
+column, keys, the bands of the boxes, function signatures, Pygments tokens —
+as `--sgb-*` variables, one value per face, built only out of the roles.
+
+`footer-em.html` stays «rights only» unless a manual asks, in its `conf.py`
+(`html_context`): `sg_footer_links` for a line of links, `sg_funding` for the
+small block with the official EU emblem (`docs-theme/eu/`, see its
+`SOURCE.md`), `sg_rights = False` to leave the licence line out.
+
+`docs-theme/check-contrast.mjs` opens pages of a built manual in Chromium, light
+and dark, and fails under WCAG AA (4.5:1, 3:1 for large text):
+
+```bash
+PLAYWRIGHT_CORE=/…/node_modules/playwright-core/index.js \
+  node docs-theme/check-contrast.mjs docs/_build/html index.html tutorial/first-study.html
+```
+
+The StratiGraph face (no `skins.css`) keeps the guidebook's burnt orange for
+links and for the bar of the side column in the light face: 2.98:1 and 3.53:1,
+under AA. Left as the guidebook has it, pending a decision on the guidebook.

@@ -21,6 +21,11 @@ cp "$BRAND/stratigraph-theme.css" "$OUT/"
 cp "$HERE/sphinx-rtd-bridge.css" "$OUT/"
 cp "$HERE/brand-theme-toggle.js" "$OUT/"
 cp "$HERE/eu-emblem.svg" "$OUT/"
+# The official «Funded by the European Union» files (eu/SOURCE.md), for a
+# manual that declares its funding in conf.py (html_context["sg_funding"]).
+mkdir -p "$OUT/eu/it"
+cp "$HERE"/eu/*.png "$OUT/eu/"
+cp "$HERE"/eu/it/*.png "$OUT/eu/it/"
 
 # Il piede della provenienza: una pagina sola lo porta, tutte le pagine lo
 # mostrano. Il modello estende quello del tema, quindi conf.py deve avere
